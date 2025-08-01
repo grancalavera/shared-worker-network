@@ -1,0 +1,156 @@
+.port-app {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.port-header {
+  padding: 2rem;
+  border-bottom: 1px solid #333;
+}
+
+.port-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.port-info {
+  display: flex;
+  gap: 2rem;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.port-id {
+  font-family: "Courier New", monospace;
+}
+
+.port-url {
+  word-break: break-all;
+}
+
+.port-content {
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.state-section {
+  margin-bottom: 3rem;
+}
+
+.state-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.state-toggle {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  transform: scale(1.05);
+}
+
+.toggle-track {
+  width: 80px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 20px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  border: 2px solid #555;
+}
+
+.toggle-button.on .toggle-track {
+  background-color: #4ade80;
+  border-color: #4ade80;
+}
+
+.toggle-button.off .toggle-track {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.toggle-thumb {
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-button.on .toggle-thumb {
+  transform: translateX(42px);
+}
+
+.toggle-button.off .toggle-thumb {
+  transform: translateX(2px);
+}
+
+.toggle-label {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.status-section {
+  display: flex;
+  justify-content: center;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  border: 2px solid #444;
+  font-weight: 500;
+}
+
+.status-indicator.on {
+  border-color: #4ade80;
+  background-color: rgba(74, 222, 128, 0.1);
+}
+
+.status-indicator.off {
+  border-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #666;
+}
+
+.status-indicator.on .indicator-dot {
+  background-color: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+.status-indicator.off .indicator-dot {
+  background-color: #ef4444;
+  box-shadow: 0 0 6px #ef4444;
+}

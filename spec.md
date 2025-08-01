@@ -277,16 +277,17 @@ src/
 │   └── (library code will be added here)
 │
 ├── public/
-│   ├── dashboard.html        # Dashboard HTML entry
-│   └── port.html            # Port HTML entry
+│   └── vite.svg             # Static assets
 │
+├── dashboard.html           # Dashboard HTML entry
+├── port.html               # Port HTML entry
 └── vite.config.ts           # Multi-entry Vite configuration
 ```
 
 ### Entry Points
 
-- **Dashboard**: `src/dashboard/main.tsx` → `public/dashboard.html`
-- **Port Interface**: `src/port/main.tsx` → `public/port.html`
+- **Dashboard**: `src/dashboard/main.tsx` → `dashboard.html`
+- **Port Interface**: `src/port/main.tsx` → `port.html`
 - **Shared Worker**: `src/rpc/worker.ts` (loaded by both entries)
 
 ### Component Responsibilities
@@ -302,7 +303,7 @@ This structure separates concerns while enabling shared code reuse through the `
 ## Milestones
 
 - [x] **Milestone 1**: Project Setup
-- [ ] **Milestone 2**: UI Components and Entry Points
+- [x] **Milestone 2**: UI Components and Entry Points
 - [ ] **Milestone 3**: RPC Layer Implementation
 
 ### Milestone 1: Project Setup
@@ -317,8 +318,8 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ### Milestone 2: UI Components and Entry Points
 
-- Create dashboard HTML entry point (`public/dashboard.html`)
-- Create port HTML entry point (`public/port.html`)
+- Create dashboard HTML entry point (`dashboard.html`)
+- Create port HTML entry point (`port.html`)
 - Implement dashboard React components:
   - `Application.tsx` - Main dashboard application
   - `PortDot.tsx` - Individual port visualization
