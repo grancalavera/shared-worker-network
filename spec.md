@@ -307,9 +307,7 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ### Milestone 1: Project Setup
 
-- Initialize Node.js project with npm
-- Configure Vite build system with TypeScript and SWC
-- Set up React application structure
+- Assume vite project is already created
 - Install and configure Vitest for testing
 - Configure Vitest test environment and settings
 - Configure ESLint with default settings, React rules, and rules of hooks
