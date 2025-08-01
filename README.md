@@ -1,69 +1,83 @@
-# React + TypeScript + Vite
+# Shared Worker Port Network Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A dashboard system for monitoring and managing a network of browser tabs connected through a shared worker. Each tab represents a port with toggleable state, and the dashboard provides real-time visualization of all connected ports.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard Visualization**: Real-time grid view of connected ports as visual dots
+- **Port Management**: Each port has an on/off state toggle
+- **Global Alert System**: Dashboard shows alerts when any port is in the "off" state
+- **Automatic Disconnection Detection**: Uses Web Locks API for immediate detection when tabs close
+- **RPC Communication**: Type-safe communication between ports and shared worker using Comlink
 
-## Expanding the ESLint configuration
+## Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The system consists of two main interfaces:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Dashboard** (`dashboard.html`): Monitors all connected ports and displays their states
+- **Port Interface** (`port.html`): Individual tab interface with state toggle
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Both interfaces communicate through a shared worker that maintains the port registry and handles state synchronization.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+### Prerequisites
+
+- Node.js (latest LTS)
+- A modern browser with Web Locks API support
+
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the development server:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Open the dashboard:
+
+- Navigate to `http://localhost:5173/dashboard.html`
+
+Launch ports:
+
+- Use the "Launch Port" button in the dashboard, or
+- Manually navigate to `http://localhost:5173/port.html`
+
+### Building
+
+```bash
+npm run build
+```
+
+### Testing
+
+```bash
+npm run test
+```
+
+## Technology Stack
+
+- **React** - Component-based UI framework
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and dev server
+- **Vitest** - Unit testing framework
+- **Comlink** - RPC library for worker communication
+- **Web Locks API** - Automatic disconnection detection
+
+## Project Status
+
+Current implementation includes:
+
+- ✅ Project setup and build configuration
+- ✅ UI components and entry points
+- ✅ Port launching functionality
+- ✅ Basic SharedWorker + Comlink foundation
+- 🚧 Full RPC layer implementation (in progress)
+
+See `spec.md` for detailed project specifications and milestones.
