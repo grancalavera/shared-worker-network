@@ -114,6 +114,31 @@ async function registerPort(portId, metadata) {
 }
 ```
 
+### Port Connection and Lock Acquisition
+
+**Client-Side Implementation:**
+
+```javascript
+// In each browser tab
+const worker = new SharedWorker("/src/rpc/worker.js");
+const api = Comlink.wrap(worker.port);
+
+// Generate unique port identifier
+const portId = crypto.randomUUID();
+
+// Acquire exclusive lock using port ID
+navigator.locks.request(portId, { mode: "exclusive" }, () => {
+  // Hold the lock as long as the tab is alive
+  return new Promise(() => {}); // Never resolves intentionally
+});
+
+// Register with worker
+await api.registerPort(portId, {
+  url: window.location.href,
+  timestamp: Date.now(),
+});
+```
+
 **Characteristics:**
 
 - **No overhead**: No intervals, no polling, no periodic checks
@@ -127,6 +152,90 @@ async function registerPort(portId, metadata) {
 2. Worker tracks port + sets up lock-release listener
 3. Tab closes → browser releases lock → worker callback fires
 4. Worker removes port from tracking + notifies dashboard
+
+### Dashboard Event Listening
+
+**Dashboard Implementation:**
+
+The dashboard connects to the shared worker as a special client that receives real-time updates about all port activities through EventTarget-based events.
+
+```javascript
+// In dashboard
+import * as Comlink from "comlink";
+
+// Connect to shared worker
+const worker = new SharedWorker("/src/rpc/worker.js");
+const api = Comlink.wrap(worker.port);
+
+// Get the dashboard event handler from worker
+const dashboardHandler = await api.getDashboardHandler();
+
+// Listen to port lifecycle events
+dashboardHandler.addEventListener("port-connected", (event) => {
+  const { portId, metadata } = event.detail;
+  addPortToUI(portId, metadata);
+});
+
+dashboardHandler.addEventListener("port-disconnected", (event) => {
+  const { portId } = event.detail;
+  removePortFromUI(portId);
+});
+
+dashboardHandler.addEventListener("port-state-changed", (event) => {
+  const { portId, state } = event.detail;
+  updatePortState(portId, state);
+  updateGlobalAlert();
+});
+```
+
+**Shared Worker Event Dispatching:**
+
+```javascript
+// In shared worker
+class DashboardHandler extends EventTarget {
+  constructor() {
+    super();
+  }
+
+  notifyPortConnected(portId, metadata) {
+    this.dispatchEvent(
+      new CustomEvent("port-connected", {
+        detail: { portId, metadata },
+      })
+    );
+  }
+
+  notifyPortDisconnected(portId) {
+    this.dispatchEvent(
+      new CustomEvent("port-disconnected", {
+        detail: { portId },
+      })
+    );
+  }
+
+  notifyPortStateChanged(portId, state) {
+    this.dispatchEvent(
+      new CustomEvent("port-state-changed", {
+        detail: { portId, state },
+      })
+    );
+  }
+}
+
+const dashboardHandler = new DashboardHandler();
+
+// Expose dashboard handler to dashboard clients
+function getDashboardHandler() {
+  return dashboardHandler;
+}
+```
+
+**Event Flow:**
+
+1. Dashboard connects and gets reference to `DashboardHandler`
+2. Worker dispatches events to `DashboardHandler` when ports connect/disconnect/change state
+3. Dashboard receives events and updates UI in real-time
+4. Global alert indicator updates based on aggregated port states
 
 **Trade-offs:**
 
@@ -191,6 +300,10 @@ src/
 This structure separates concerns while enabling shared code reuse through the `rpc/` directory for communication logic.
 
 ## Milestones
+
+- [ ] **Milestone 1**: Project Setup
+- [ ] **Milestone 2**: UI Components and Entry Points
+- [ ] **Milestone 3**: RPC Layer Implementation
 
 ### Milestone 1: Project Setup
 
