@@ -305,7 +305,7 @@ This structure separates concerns while enabling shared code reuse through the `
 - [x] **Milestone 1**: Project Setup
 - [x] **Milestone 2**: UI Components and Entry Points
 - [x] **Milestone 3**: Launch Ports
-- [ ] **Milestone 4**: Basic SharedWorker + Comlink Foundation
+- [x] **Milestone 4**: Basic SharedWorker + Comlink Foundation
 - [ ] **Milestone 5**: Full RPC Layer Implementation
 
 ### Milestone 1: Project Setup
@@ -345,10 +345,33 @@ This structure separates concerns while enabling shared code reuse through the `
 
 - Create a trivial shared worker that accepts connections
 - Implement an `echo` method that receives a string and sends it back to the calling port
+- **Echo Verification**: The worker must append or prepend a distinctive marker to the echo string (e.g., "WORKER: " + originalMessage) to confirm the message traveled from port → worker → port
+- **Echo Counter**: The worker maintains an internal counter of total echo messages received and includes this count in each echo response
 - Use Comlink to expose the worker API and wrap the client connection
-- Create RPC client as a singleton at module level for shared worker connection
+- **IMPORTANT**: Use Vite's recommended worker constructor syntax with `new URL()` for SharedWorker creation (see [Vite Web Workers docs](https://vitejs.dev/guide/features.html#import-with-constructors))
+- Export WorkerAPI directly from client module (no getAPI or initialize methods needed)
 - Add "Echo Test" button to the dashboard
 - Verify RPC communication works correctly between dashboard and worker
+
+**Technical Requirements:**
+
+- Follow Vite's worker creation patterns using `new SharedWorker(new URL('./worker.js', import.meta.url), { type: 'module', name: 'worker-name' })`
+- Ensure worker script uses ESM imports instead of `importScripts()`
+- Initialize SharedWorker synchronously in module scope, export Comlink-wrapped API directly
+- Call `port.start()` on both client and worker sides for proper MessagePort communication
+- Reference: [Vite Web Workers Documentation](https://vitejs.dev/guide/features.html#web-workers)
+
+**Implementation Pattern:**
+
+```typescript
+// client.ts - Simple, synchronous initialization
+const worker = new SharedWorker(new URL("./worker.ts", import.meta.url), {
+  type: "module",
+  name: "shared-worker-network-rpc",
+});
+worker.port.start();
+export const workerAPI = Comlink.wrap<WorkerAPI>(worker.port);
+```
 
 ### Milestone 5: Full RPC Layer Implementation
 
