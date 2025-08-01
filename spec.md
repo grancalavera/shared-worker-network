@@ -301,7 +301,7 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ## Milestones
 
-- [x] **Milestone 1**: Project Setup
+- [ ] **Milestone 1**: Project Setup
 - [ ] **Milestone 2**: UI Components and Entry Points
 - [ ] **Milestone 3**: RPC Layer Implementation
 
