@@ -305,7 +305,8 @@ This structure separates concerns while enabling shared code reuse through the `
 - [x] **Milestone 1**: Project Setup
 - [x] **Milestone 2**: UI Components and Entry Points
 - [x] **Milestone 3**: Launch Ports
-- [ ] **Milestone 4**: RPC Layer Implementation
+- [ ] **Milestone 4**: Basic SharedWorker + Comlink Foundation
+- [ ] **Milestone 5**: Full RPC Layer Implementation
 
 ### Milestone 1: Project Setup
 
@@ -338,9 +339,18 @@ This structure separates concerns while enabling shared code reuse through the `
 - Add "Launch Port" button to the dashboard UI
 - Implement `window.open()` to launch new port windows pointing to `port.html`
 - Add basic error handling for popup blockers
-- **Out of scope**: Port connection behavior (handled in Milestone 4)
+- **Out of scope**: Port connection behavior (handled in Milestone 5)
 
-### Milestone 4: RPC Layer Implementation
+### Milestone 4: Basic SharedWorker + Comlink Foundation
+
+- Create a trivial shared worker that accepts connections
+- Implement an `echo` method that receives a string and sends it back to the calling port
+- Use Comlink to expose the worker API and wrap the client connection
+- Create RPC client as a singleton at module level for shared worker connection
+- Add "Echo Test" button to the dashboard
+- Verify RPC communication works correctly between dashboard and worker
+
+### Milestone 5: Full RPC Layer Implementation
 
 - Implement shared worker (`src/rpc/worker.ts`):
   - Port registry with UUID-based tracking
