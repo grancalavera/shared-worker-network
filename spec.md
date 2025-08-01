@@ -304,7 +304,8 @@ This structure separates concerns while enabling shared code reuse through the `
 
 - [x] **Milestone 1**: Project Setup
 - [x] **Milestone 2**: UI Components and Entry Points
-- [ ] **Milestone 3**: RPC Layer Implementation
+- [ ] **Milestone 3**: Launch Ports
+- [ ] **Milestone 4**: RPC Layer Implementation
 
 ### Milestone 1: Project Setup
 
@@ -332,7 +333,14 @@ This structure separates concerns while enabling shared code reuse through the `
 - Add basic styling for both interfaces
 - **Out of scope**: RPC layer implementation (client.ts, worker.ts)
 
-### Milestone 3: RPC Layer Implementation
+### Milestone 3: Launch Ports
+
+- Add "Launch Port" button to the dashboard UI
+- Implement `window.open()` to launch new port windows pointing to `port.html`
+- Add basic error handling for popup blockers
+- **Out of scope**: Port connection behavior (handled in Milestone 4)
+
+### Milestone 4: RPC Layer Implementation
 
 - Implement shared worker (`src/rpc/worker.ts`):
   - Port registry with UUID-based tracking
