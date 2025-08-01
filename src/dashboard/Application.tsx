@@ -16,11 +16,29 @@ const Application: React.FC = () => {
 
   const hasOffPorts = ports.some((port) => port.state === "off");
 
+  const launchPort = () => {
+    try {
+      const portWindow = window.open("/port.html", "_blank", "width=400,height=500");
+      if (!portWindow) {
+        console.error("Failed to launch port: popup blocked");
+        alert("Unable to launch port. Please allow popups for this site.");
+      }
+    } catch (error) {
+      console.error("Error launching port:", error);
+      alert("An error occurred while launching the port.");
+    }
+  };
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <h1>Shared Worker Network Dashboard</h1>
-        <div className="connection-count">Connected Ports: {ports.length}</div>
+        <div className="header-controls">
+          <button className="launch-port-button" onClick={launchPort} type="button">
+            Launch Port
+          </button>
+          <div className="connection-count">Connected Ports: {ports.length}</div>
+        </div>
       </header>
 
       <GlobalAlert isVisible={hasOffPorts} />

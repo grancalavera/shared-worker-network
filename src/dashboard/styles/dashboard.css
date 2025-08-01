@@ -19,6 +19,33 @@
   font-weight: 600;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.launch-port-button {
+  background-color: #4ade80;
+  color: #1a1a1a;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.launch-port-button:hover {
+  background-color: #22c55e;
+  transform: translateY(-1px);
+}
+
+.launch-port-button:active {
+  transform: translateY(0);
+}
+
 .connection-count {
   color: #888;
   font-size: 0.9rem;
