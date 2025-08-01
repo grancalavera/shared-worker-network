@@ -46,7 +46,7 @@ This specification defines a system for managing a network of ports connected to
 - **Runtime**: Node.js - JavaScript runtime environment
 - **Package Manager**: npm - Package manager for JavaScript
 - **Build Tool**: Vite - Fast build tool and dev server
-- **Testing**: Vitest - Unit testing framework integrated with Vite
+- **Testing**: Vitest - Unit testing framework integrated with Vite. Tests files should be co-located with source files.
 - **Worker Communication**: Comlink - RPC library for seamless worker communication
 - **UI Framework**: React - Component-based UI library
 - **State Management**: RxJS - Reactive programming for managing asynchronous data streams
@@ -120,7 +120,7 @@ async function registerPort(portId, metadata) {
 
 ```javascript
 // In each browser tab
-const worker = new SharedWorker("/src/rpc/worker.js");
+const worker = new SharedWorker("/project/src/rpc/worker.js");
 const api = Comlink.wrap(worker.port);
 
 // Generate unique port identifier
@@ -164,7 +164,7 @@ The dashboard connects to the shared worker as a special client that receives re
 import * as Comlink from "comlink";
 
 // Connect to shared worker
-const worker = new SharedWorker("/src/rpc/worker.js");
+const worker = new SharedWorker("/project/src/rpc/worker.js");
 const api = Comlink.wrap(worker.port);
 
 // Get the dashboard event handler from worker
@@ -250,31 +250,34 @@ This represents a lock-based approach that eliminates the need for heartbeat mec
 ### Project Structure
 
 ```text
-src/
-├── dashboard/
-│   ├── main.tsx              # Dashboard entry point
-│   ├── Application.tsx       # Main dashboard React component
-│   ├── components/
-│   │   ├── PortDot.tsx      # Individual port visualization
-│   │   ├── GlobalAlert.tsx   # Alert indicator component
-│   │   └── PortGrid.tsx     # Grid layout for port dots
-│   └── styles/
-│       └── dashboard.css
-│
-├── port/
-│   ├── main.tsx              # Port entry point
-│   ├── PortApp.tsx          # Port interface React component
-│   ├── components/
-│   │   └── StateToggle.tsx   # On/off toggle button
-│   └── styles/
-│       └── port.css
-│
-├── rpc/
-│   ├── client.ts            # Client-side RPC interface (Comlink wrapper)
-│   └── worker.ts            # Shared worker implementation
-│
-├── lib/
-│   └── (library code will be added here)
+project/
+├── src/
+│   ├── dashboard/
+│   │   ├── main.tsx              # Dashboard entry point
+│   │   ├── Application.tsx       # Main dashboard React component
+│   │   ├── components/
+│   │   │   ├── PortDot.tsx      # Individual port visualization
+│   │   │   ├── GlobalAlert.tsx   # Alert indicator component
+│   │   │   └── PortGrid.tsx     # Grid layout for port dots
+│   │   └── styles/
+│   │       └── dashboard.css
+│   │
+│   ├── port/
+│   │   ├── main.tsx              # Port entry point
+│   │   ├── PortApp.tsx          # Port interface React component
+│   │   ├── components/
+│   │   │   └── StateToggle.tsx   # On/off toggle button
+│   │   └── styles/
+│   │       └── port.css
+│   │
+│   ├── rpc/
+│   │   ├── client.ts            # Client-side RPC interface (Comlink wrapper)
+│   │   ├── client.test.ts       # Client-side RPC interface tests
+│   │   ├── worker.ts            # Shared worker implementation
+│   │   └── worker.test.ts       # Shared worker implementation tests
+│   │
+│   └── lib/
+│       └── (library code will be added here)
 │
 ├── public/
 │   ├── dashboard.html        # Dashboard HTML entry
@@ -285,9 +288,9 @@ src/
 
 ### Entry Points
 
-- **Dashboard**: `src/dashboard/main.tsx` → `public/dashboard.html`
-- **Port Interface**: `src/port/main.tsx` → `public/port.html`
-- **Shared Worker**: `src/rpc/worker.ts` (loaded by both entries)
+- **Dashboard**: `project/src/dashboard/main.tsx` → `project/public/dashboard.html`
+- **Port Interface**: `project/src/port/main.tsx` → `project/public/port.html`
+- **Shared Worker**: `project/src/rpc/worker.ts` (loaded by both entries)
 
 ### Component Responsibilities
 
@@ -307,20 +310,15 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ### Milestone 1: Project Setup
 
-- Initialize Node.js project with npm
-- Configure Vite build system with TypeScript and SWC
-- Set up React application structure
-- Install and configure Vitest for testing
-- Configure Vitest test environment and settings
-- Configure ESLint with default settings, React rules, and rules of hooks
-- Configure Prettier with default settings
+- Initialize Vite project using the react-swc-ts template in `project/` directory
+- Configure Vitest for testing
 - Add Comlink and RxJS dependencies
 - Create basic project structure and build scripts
 
 ### Milestone 2: UI Components and Entry Points
 
-- Create dashboard HTML entry point (`public/dashboard.html`)
-- Create port HTML entry point (`public/port.html`)
+- Create dashboard HTML entry point (`project/public/dashboard.html`)
+- Create port HTML entry point (`project/public/port.html`)
 - Implement dashboard React components:
   - `Application.tsx` - Main dashboard application
   - `PortDot.tsx` - Individual port visualization
@@ -335,12 +333,12 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ### Milestone 3: RPC Layer Implementation
 
-- Implement shared worker (`src/rpc/worker.ts`):
+- Implement shared worker (`project/src/rpc/worker.ts`):
   - Port registry with UUID-based tracking
   - Web Locks API integration for disconnection detection
   - Port state management (on/off)
   - Lock-based cleanup on lock release
-- Implement RPC client (`src/rpc/client.ts`):
+- Implement RPC client (`project/src/rpc/client.ts`):
   - Comlink wrapper for type-safe worker communication
   - Port registration with UUID generation
   - State update methods
