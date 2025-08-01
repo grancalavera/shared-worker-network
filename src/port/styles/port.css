@@ -1,0 +1,9 @@
+.port {
+  padding: 2rem;
+  text-align: center;
+}
+
+.port h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
