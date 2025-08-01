@@ -14,7 +14,7 @@ This specification defines a system for managing a network of ports connected to
 
 ### Port Lifecycle Detection
 
-- **Disconnection Detection**: Use Web Locks API for event-driven detection - each port holds a unique lock using its UUID, shared worker listens for lock release
+- **Disconnection Detection**: Use Web Locks API for lock-based detection - each port holds a unique lock using its UUID, shared worker listens for lock release
 - **Lock Strategy**: Each connecting port acquires an exclusive lock using its UUID directly, worker sets up promise-based listener for lock release
 - **Cleanup Trigger**: When tab closes/crashes, browser automatically releases lock, triggering immediate cleanup in shared worker
 - **Browser Support Fallback**: No support for browsers without Web Locks API.
@@ -40,17 +40,6 @@ This specification defines a system for managing a network of ports connected to
 - **Dashboard Implementation**: React application using TypeScript, vite and npm.
 - **Port Registry**: A shared worker maintains a registry of connected ports, storing their UUIDs and metadata.
 - **Message Protocol**: RPC using <https://github.com/GoogleChromeLabs/comlink>
-
-### Error Handling & Edge Cases
-
-- **Unresponsive Ports**: How should you handle ports that become unresponsive but haven't officially disconnected?
-- **Reconnection Scenarios**: What if a port reconnects quickly (browser refresh) - treat as new connection or resumption?
-- **Worker Crashes**: How should the system handle shared worker crashes or restarts?
-- **Network Issues**: How should temporary network partitions be handled?
-
-### Security & Privacy
-
-- **Cross-Origin**: Communication between tabs and shared worker should respect same-origin policy only.
 
 ## Technology Stack
 
@@ -105,7 +94,7 @@ await api.registerPort(portId);
 
 ## Health Check Method
 
-### Event-Driven Lock Release Detection
+### Lock-Based Disconnection Detection
 
 **Implementation Approach:**
 
@@ -145,7 +134,7 @@ async function registerPort(portId, metadata) {
 - **Same-origin limitation**: Won't work across different origins
 - **Dependency**: Relies on relatively new browser API
 
-This represents an event-driven approach that eliminates the need for heartbeat mechanisms or polling, providing immediate and reliable disconnection detection.
+This represents a lock-based approach that eliminates the need for heartbeat mechanisms or polling, providing immediate and reliable disconnection detection.
 
 ## Architecture
 
@@ -209,5 +198,42 @@ This structure separates concerns while enabling shared code reuse through the `
 - Configure Vite build system with TypeScript and SWC
 - Set up React application structure
 - Install and configure Vitest for testing
+- Configure Vitest test environment and settings
+- Configure ESLint with default settings, React rules, and rules of hooks
+- Configure Prettier with default settings
 - Add Comlink and RxJS dependencies
 - Create basic project structure and build scripts
+
+### Milestone 2: UI Components and Entry Points
+
+- Create dashboard HTML entry point (`public/dashboard.html`)
+- Create port HTML entry point (`public/port.html`)
+- Implement dashboard React components:
+  - `Application.tsx` - Main dashboard application
+  - `PortDot.tsx` - Individual port visualization
+  - `GlobalAlert.tsx` - Global status indicator
+  - `PortGrid.tsx` - Grid layout for port dots
+- Implement port interface React components:
+  - `PortApp.tsx` - Port interface application
+  - `StateToggle.tsx` - On/off toggle button
+- Configure Vite multi-entry build setup
+- Add basic styling for both interfaces
+- **Out of scope**: RPC layer implementation (client.ts, worker.ts)
+
+### Milestone 3: RPC Layer Implementation
+
+- Implement shared worker (`src/rpc/worker.ts`):
+  - Port registry with UUID-based tracking
+  - Web Locks API integration for disconnection detection
+  - Port state management (on/off)
+  - Lock-based cleanup on lock release
+- Implement RPC client (`src/rpc/client.ts`):
+  - Comlink wrapper for type-safe worker communication
+  - Port registration with UUID generation
+  - State update methods
+  - Lock acquisition on connection
+- Integrate RPC layer with UI components:
+  - Connect dashboard to receive port updates
+  - Connect port interface to send state changes
+- Implement dashboard real-time updates using RxJS
+- Add error handling for RPC communication failures
