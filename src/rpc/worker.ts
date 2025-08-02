@@ -1,11 +1,12 @@
 import * as Comlink from "comlink";
+import type { WorkerAPI as IWorkerAPI } from "./types.js";
 
 declare const self: SharedWorkerGlobalScope;
 
-class WorkerAPI {
+class WorkerAPI implements IWorkerAPI {
   private echoCount = 0;
 
-  echo(message: string): string {
+  async echo(message: string): Promise<string> {
     this.echoCount++;
     console.log(`Worker received: ${message}`);
     return `WORKER #${this.echoCount}: ${message}`;

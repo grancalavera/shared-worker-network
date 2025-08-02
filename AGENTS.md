@@ -71,7 +71,7 @@ This is a React + TypeScript + Vite project that implements a shared worker port
 - ✅ Milestone 2: UI Components and Entry Points
 - ✅ Milestone 3: Launch Ports
 - ✅ Milestone 4: Basic SharedWorker + Comlink Foundation
-- 🚧 Milestone 5: Full RPC Layer Implementation
+- ✅ Milestone 5: Full RPC Layer Implementation
 
 ## Testing Guidelines
 

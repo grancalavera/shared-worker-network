@@ -1,8 +1,5 @@
 import * as Comlink from "comlink";
-
-export interface WorkerAPI {
-  echo(message: string): Promise<string>;
-}
+import type { WorkerAPI } from "./types.js";
 
 const worker = new SharedWorker(new URL("./worker.ts", import.meta.url), {
   type: "module",
