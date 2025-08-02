@@ -279,14 +279,14 @@ src/
 ├── public/
 │   └── vite.svg             # Static assets
 │
-├── dashboard.html           # Dashboard HTML entry
+├── index.html              # Dashboard HTML entry
 ├── port.html               # Port HTML entry
 └── vite.config.ts           # Multi-entry Vite configuration
 ```
 
 ### Entry Points
 
-- **Dashboard**: `src/dashboard/main.tsx` → `dashboard.html`
+- **Dashboard**: `src/dashboard/main.tsx` → `index.html`
 - **Port Interface**: `src/port/main.tsx` → `port.html`
 - **Shared Worker**: `src/rpc/worker.ts` (loaded by both entries)
 
@@ -320,7 +320,7 @@ This structure separates concerns while enabling shared code reuse through the `
 
 ### Milestone 2: UI Components and Entry Points
 
-- Create dashboard HTML entry point (`dashboard.html`)
+- Create dashboard HTML entry point (`index.html`)
 - Create port HTML entry point (`port.html`)
 - Implement dashboard React components:
   - `Application.tsx` - Main dashboard application

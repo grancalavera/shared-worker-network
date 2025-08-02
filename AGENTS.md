@@ -1,5 +1,9 @@
 # Agent Guidelines for shared-worker-network
 
+## Agent Etiquette
+
+- Don't start the dev server (`npm run dev`), assume it is running. If you need to test something and the dev server isn't running ask me to start it for you.
+
 ## Project Overview
 
 This is a React + TypeScript + Vite project that implements a shared worker port network management system. The system consists of two main interfaces (dashboard and port) that communicate through a shared worker using Comlink for RPC.

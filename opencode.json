@@ -4,7 +4,10 @@
     "puppeteer": {
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-puppeteer"],
-      "enabled": true
+      "enabled": true,
+      "environment": {
+        "PUPPETEER_TMP_DIR": "/Users/grancalavera/works/shared-worker-network/.puppeteer/"
+      }
     }
   }
 }

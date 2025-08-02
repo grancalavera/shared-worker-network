@@ -46,19 +46,6 @@ const Application: React.FC = () => {
     setEchoResult("");
   };
 
-  const inspectWorkers = async () => {
-    try {
-      const url = "chrome://inspect#workers";
-      await navigator.clipboard.writeText(url);
-      alert(
-        `URL copied to clipboard: ${url}\n\nPaste this in your address bar to inspect SharedWorkers.`
-      );
-    } catch (error) {
-      console.error("Error copying to clipboard:", error);
-      alert("Please navigate to chrome://inspect#workers manually to inspect SharedWorkers.");
-    }
-  };
-
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -69,10 +56,7 @@ const Application: React.FC = () => {
           </button>
           <button className="echo-test-button" onClick={testEcho} type="button">
             Echo Test
-          </button>
-          <button className="inspect-workers-button" onClick={inspectWorkers} type="button">
-            Inspect Workers
-          </button>
+          </button>{" "}
           <div className="connection-count">Connected Ports: {ports.length}</div>
         </div>
       </header>

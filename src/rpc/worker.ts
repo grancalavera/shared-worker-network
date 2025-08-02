@@ -1,5 +1,7 @@
 import * as Comlink from "comlink";
 
+declare const self: SharedWorkerGlobalScope;
+
 class WorkerAPI {
   private echoCount = 0;
 
@@ -12,7 +14,7 @@ class WorkerAPI {
 
 const api = new WorkerAPI();
 
-self.addEventListener("connect", (event: any) => {
+self.addEventListener("connect", (event) => {
   const port = event.ports[0];
   port.start();
   Comlink.expose(api, port);
