@@ -2,6 +2,7 @@
 
 ## Agent Etiquette
 
+- If I tell you to work on the specification, just make changes to the specification and not to the code. I want to be able to commit specification changes separately from code changes.
 - Don't start the dev server (`npm run dev`), assume it is running. If you need to test something and the dev server isn't running ask me to start it for you.
 
 ## Project Overview
