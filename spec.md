@@ -270,6 +270,7 @@ src/
 │       └── port.css
 │
 ├── rpc/
+│   ├── types.ts             # Shared interface definitions and types
 │   ├── client.ts            # Client-side RPC interface (Comlink wrapper)
 │   └── worker.ts            # Shared worker implementation
 │
@@ -292,13 +293,48 @@ src/
 
 ### Component Responsibilities
 
-- **client.ts**: Comlink wrapper for type-safe RPC communication
-- **worker.ts**: Shared worker with port registry and Web Locks logic
+- **types.ts**: Shared TypeScript interface definitions for RPC communication
+- **client.ts**: Comlink wrapper implementing the shared RPC interface
+- **worker.ts**: Shared worker class implementing the shared RPC interface
 - **Application.tsx**: Dashboard UI with port visualization and global alerts
 - **PortApp.tsx**: Port interface with state toggle functionality
 - **lib/**: Top-level directory for any library code
 
 This structure separates concerns while enabling shared code reuse through the `rpc/` directory for communication logic.
+
+## Interface Architecture
+
+### Shared RPC Interface Contract
+
+Both `src/rpc/client.ts` and `src/rpc/worker.ts` must implement the same TypeScript interface to ensure type safety and API consistency across the RPC boundary.
+
+**Core Principle**: The client exposes a Comlink-wrapped proxy of the worker's API, while the worker implements the actual API methods directly.
+
+### Interface Definition Requirements
+
+A shared interface definition must be created that defines:
+
+1. **Port Management Methods**:
+   - `registerPort(portId: string): Promise<void>`
+   - `updatePortState(portId: string, state: PortState): Promise<void>`
+   - `getActivePorts(): Promise<PortInfo[]>`
+
+2. **Dashboard Event Handler**:
+   - `getDashboardHandler(): Promise<DashboardEventHandler>`
+
+3. **Utility Methods**:
+   - `echo(message: string): Promise<string>` (for testing)
+
+### Implementation Contract
+
+- **Worker (`worker.ts`)**: Implements the interface methods directly as a class
+- **Client (`client.ts`)**: Exports a Comlink-wrapped proxy that conforms to the same interface
+- **Type Safety**: Both files must import and implement the same interface declaration
+- **API Consistency**: Method signatures, return types, and error handling must be identical
+
+### Interface Location
+
+The shared interface should be defined in a separate file within the `src/rpc/` directory to ensure both client and worker can import the same type definitions.
 
 ## Milestones
 
