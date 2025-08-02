@@ -342,7 +342,8 @@ The shared interface should be defined in a separate file within the `src/rpc/` 
 - [x] **Milestone 2**: UI Components and Entry Points
 - [x] **Milestone 3**: Launch Ports
 - [x] **Milestone 4**: Basic SharedWorker + Comlink Foundation
-- [ ] **Milestone 5**: Full RPC Layer Implementation
+- [ ] **Milestone 5**: RPC Interface Contract
+- [ ] **Milestone 6**: Full RPC Layer Implementation
 
 ### Milestone 1: Project Setup
 
@@ -409,7 +410,15 @@ worker.port.start();
 export const workerAPI = Comlink.wrap<WorkerAPI>(worker.port);
 ```
 
-### Milestone 5: Full RPC Layer Implementation
+### Milestone 5: RPC Interface Contract
+
+- Refactor existing RPC layer to align with specification requirements
+- Implement shared interface contract between client and worker
+- Update client.ts and worker.ts to use consistent API patterns
+- **Scope**: Only implement `echo` method - all other RPC methods are out of scope
+- **Out of scope**: Port registration, state management, dashboard events
+
+### Milestone 6: Full RPC Layer Implementation
 
 - Implement shared worker (`src/rpc/worker.ts`):
   - Port registry with UUID-based tracking
